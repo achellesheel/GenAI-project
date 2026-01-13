@@ -1,6 +1,6 @@
 # GenAI-project
 AI Content Studie- Full Stack GenAI
-
+Link: https://claude.ai/public/artifacts/d7c293d2-d750-4cd7-8bd8-bc68bab6f320
 # 🎨 AI Content Studio
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
