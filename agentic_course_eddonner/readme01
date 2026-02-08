@@ -1,0 +1,155 @@
+# LLM Intelligence Benchmark Tool
+
+A Python-based framework for evaluating and comparing the intelligence and reasoning capabilities of different Large Language Models (LLMs) through automated question generation, multi-model testing, and AI-judged ranking.
+
+## Overview
+
+This project implements an **agentic design pattern** that combines:
+- **Evaluator/Critic Pattern**: Using GPT to judge and rank competitor responses
+- **Orchestrator Pattern**: Coordinating multiple LLM interactions in a structured workflow
+
+The system works in three phases:
+1. **Question Generation**: An LLM generates a challenging, nuanced question
+2. **Multi-Model Testing**: Multiple LLMs answer the same question
+3. **Automated Evaluation**: An LLM judge evaluates and ranks all responses
+
+## Features
+
+- 🤖 Multi-provider LLM support (OpenAI, Anthropic, Google, DeepSeek, Groq, Ollama)
+- 🎯 Automated generation of challenging benchmark questions
+- 📊 Structured JSON-based ranking system
+- 🔄 Easy to extend with additional models
+- 🏆 Comparative analysis across different LLM capabilities
+
+## Architecture
+
+```
+┌─────────────────┐
+│  GPT-5-mini     │ ──► Generates challenging question
+└─────────────────┘
+         │
+         ▼
+┌─────────────────┐
+│  Competitor 1   │ ──► Answers question
+│  Competitor 2   │ ──► Answers question
+│  Competitor N   │ ──► Answers question
+└─────────────────┘
+         │
+         ▼
+┌─────────────────┐
+│  GPT-5-mini     │ ──► Judges & ranks all responses
+│    (Judge)      │
+└─────────────────┘
+```
+
+## Prerequisites
+
+- Python 3.8+
+- API keys for desired LLM providers
+- Ollama (optional, for local models)
+
+## Installation
+
+1. Clone this repository
+2. Install required packages:
+```bash
+pip install openai anthropic python-dotenv ipython
+```
+
+3. Create a `.env` file with your API keys:
+```env
+OPENAI_API_KEY=sk-proj-...
+ANTHROPIC_API_KEY=sk-ant-...
+GOOGLE_API_KEY=...
+DEEPSEEK_API_KEY=...
+GROQ_API_KEY=...
+```
+
+## Usage
+
+Run the Jupyter notebook or Python script to:
+1. Generate a benchmark question
+2. Collect responses from multiple LLMs
+3. Receive automated rankings
+
+The current implementation compares:
+- GPT-5-nano
+- Llama 3.2 (via Ollama)
+
+## Agentic Design Patterns Used
+
+### 1. Evaluator/Critic Pattern
+The system uses GPT-5-mini as an independent judge to:
+- Evaluate responses for clarity and argument strength
+- Provide objective, structured rankings in JSON format
+- Eliminate human bias from the evaluation process
+
+### 2. Orchestrator Pattern
+The main script orchestrates:
+- Question generation from one LLM
+- Distribution of the question to multiple competitor LLMs
+- Collection and aggregation of responses
+- Submission to the judge LLM for evaluation
+
+## Extending the Framework
+
+### Adding a New Competitor
+
+To add more LLMs to the comparison:
+
+```python
+# Example: Adding GPT-4
+model_name = "gpt-4"
+response = openai.chat.completions.create(model=model_name, messages=messages)
+answer = response.choices[0].message.content
+
+display(Markdown(answer))
+competitors.append(model_name)
+answers.append(answer)
+```
+
+### Implementing Additional Agentic Patterns
+
+Consider adding:
+- **Reflection Pattern**: Have models critique their own responses before submission
+- **Tool Use Pattern**: Allow models to use external tools/APIs to enhance responses
+- **Multi-Agent Debate**: Have models discuss and refine responses collaboratively
+- **Planning Pattern**: Break complex questions into sub-problems
+
+## Sample Output
+
+The system generates policy analysis questions like:
+> "Design a prioritized 5-year policy plan for a hypothetical nation facing climate change, economic challenges, and political polarization..."
+
+And produces rankings such as:
+```
+Rank 1: gpt-5-nano
+Rank 2: llama3.2
+Rank 3: llama3.2
+```
+
+## Future Enhancements
+
+- [ ] Add more sophisticated judging criteria (factual accuracy, creativity, etc.)
+- [ ] Implement multiple judges for consensus ranking
+- [ ] Add question difficulty scaling
+- [ ] Create visualization dashboard for results
+- [ ] Support batch testing with multiple questions
+- [ ] Add cost tracking per model
+- [ ] Implement reflection pattern for self-improvement
+
+## Contributing
+
+Contributions are welcome! Consider adding:
+- New LLM providers
+- Additional agentic patterns
+- Enhanced evaluation metrics
+- Better visualization tools
+
+## License
+
+MIT License
+
+## Acknowledgments
+
+Built using the OpenAI API, Anthropic Claude, and Ollama for local LLM support.
